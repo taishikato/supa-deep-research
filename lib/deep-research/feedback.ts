@@ -1,8 +1,9 @@
-import { generateObject } from "ai";
 import { z } from "zod";
+import { type AIModel } from "./ai/providers";
 
-import { type AIModel, createModel } from "./ai/providers";
-import { systemPrompt } from "./prompt";
+const feedbackSchema = z.object({
+  questions: z.array(z.string()),
+});
 
 export async function generateFeedback({
   query,
@@ -15,21 +16,84 @@ export async function generateFeedback({
   modelId?: AIModel;
   apiKey?: string;
 }) {
-  const model = createModel(modelId, apiKey);
+  console.log("\n🔍 [FEEDBACK] === Function Started ===");
+  console.log("Input params:", { query, numQuestions, modelId });
+  console.log("API Key present:", apiKey ? "✅" : "❌");
 
-  const userFeedback = await generateObject({
-    model,
-    system: systemPrompt(),
-    prompt:
-      `Given the following query from the user, ask some follow up questions to clarify the research direction. Return a maximum of ${numQuestions} questions, but feel free to return less if the original query is clear: <query>${query}</query>`,
-    schema: z.object({
-      questions: z
-        .array(z.string())
-        .describe(
-          `Follow up questions to clarify the research direction, max of ${numQuestions}`,
-        ),
-    }),
-  });
+  try {
+    console.log("\n📝 [FEEDBACK] Preparing prompts...");
+    const systemPrompt =
+      `You are a helpful AI assistant that generates insightful follow-up questions based on a given query or statement. Your questions should:
+- Be relevant to the original query
+- Encourage deeper thinking
+- Be clear and concise
+- Avoid yes/no questions
+- Each be unique and explore different aspects`;
 
-  return userFeedback.object.questions.slice(0, numQuestions);
+    const userPrompt =
+      `Generate ${numQuestions} insightful follow-up questions for this query: "${query}"`;
+
+    console.log("\n🌐 [FEEDBACK] Making OpenAI API request...");
+
+    console.log("Request init:", {
+      method: "POST",
+    });
+
+    const request = new Request("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.7,
+      }),
+    });
+
+    const response = await fetch(request);
+
+    console.log("\n📨 [FEEDBACK] Response received");
+    console.log("Response status:", response.status);
+    console.log("Response OK:", response.ok);
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("\n❌ [FEEDBACK] API Error:", error);
+      throw new Error(`OpenAI API error: ${JSON.stringify(error)}`);
+    }
+
+    console.log("\n🔄 [FEEDBACK] Parsing response...");
+    const data = await response.json();
+    console.log("Raw API response:", data);
+
+    const content = data.choices?.[0]?.message?.content;
+    console.log("Extracted content:", content);
+
+    if (!content) {
+      console.error("\n❌ [FEEDBACK] No content in response");
+      throw new Error("No content received from OpenAI");
+    }
+
+    console.log("\n✂️ [FEEDBACK] Processing questions...");
+    // Split the content into individual questions and clean them up
+    const questions = content
+      .split(/\d+\.\s+/)
+      .filter(Boolean)
+      .map((q: string) => q.trim())
+      .slice(0, numQuestions);
+
+    console.log("\n✅ [FEEDBACK] Success!");
+    console.log("Generated questions:", questions);
+    console.log("Number of questions:", questions.length);
+
+    return questions;
+  } catch (error) {
+    console.error("\n💥 [FEEDBACK] Function Error:", error);
+    throw error;
+  }
 }

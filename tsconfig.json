@@ -9,7 +9,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -32,7 +32,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".contentlayer/generated"
-    // ^^^^^^^^^^^^^^^^^^^^^^
+, "next.config.ts"    // ^^^^^^^^^^^^^^^^^^^^^^
   ],
   "exclude": ["node_modules", "supabase"]
 }

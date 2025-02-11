@@ -1,13 +1,21 @@
 {
+  "name": "supa-deep-research",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "build:worker": "opennextjs-cloudflare",
+    "dev:worker": "wrangler dev --port 8771",
+    "preview:worker": "npm run build:worker && npm run dev:worker",
+    "deploy:worker": "npm run build:worker && wrangler deploy"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.9",
+    "@edge-runtime/primitives": "^6.0.0",
     "@mendable/firecrawl-js": "^1.16.0",
+    "@opennextjs/aws": "^3.4.2",
+    "@opennextjs/cloudflare": "^0.4.8",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slider": "^1.2.3",
@@ -29,6 +37,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-markdown": "^9.0.1",
+    "redaxios": "^0.5.1",
     "remark-gfm": "^4.0.0",
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",

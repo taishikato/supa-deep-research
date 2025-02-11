@@ -30,6 +30,7 @@ out/
 build
 dist
 
+.open-next
 
 # Debug
 npm-debug.log*
@@ -40,10 +41,6 @@ yarn-error.log*
 .DS_Store
 *.pem
 
-# Package Manager Lock Files
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
 
 # IDE/Editor specific
 .idea/
