@@ -1,8 +1,8 @@
-import { generateObject } from "npm:ai";
-import { z } from "npm:zod";
+import { generateObject } from "ai";
+import { z } from "zod";
 
-import { type AIModel, createModel } from "./ai/providers.ts";
-import { systemPrompt } from "./prompt.ts";
+import { type AIModel, createModel } from "./ai/providers";
+import { systemPrompt } from "./prompt";
 
 export async function generateFeedback({
   query,
