@@ -68,7 +68,7 @@ export function Chat({
       setProgress([]);
 
       // Create the EventSource for SSE
-      const response = await fetch("/api/research2", {
+      const response = await fetch("/api/research", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
