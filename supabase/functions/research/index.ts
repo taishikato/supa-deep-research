@@ -1,13 +1,19 @@
-import { NextRequest } from "next/server";
+import { corsHeaders } from "../_shared/cors.ts";
+import { getCookies } from "jsr:@std/http/cookie";
 
 import {
   deepResearch,
   generateFeedback,
   writeFinalReport,
-} from "@/lib/deep-research";
-import { type AIModel, createModel } from "@/lib/deep-research/ai/providers";
+} from "./deep-research/index.ts";
+import { type AIModel, createModel } from "./deep-research/ai/providers.ts";
 
-export async function POST(req: NextRequest) {
+Deno.serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
   try {
     const {
       query,
@@ -16,27 +22,31 @@ export async function POST(req: NextRequest) {
       modelId = "o3-mini",
     } = await req.json();
 
-    // Retrieve API keys from secure cookies
-    const openaiKey = req.cookies.get("openai-key")?.value;
-    const firecrawlKey = req.cookies.get("firecrawl-key")?.value;
+    const cookies = getCookies(req.headers);
+
+    // Get API keys from cookies
+    const openaiKey = cookies["openai-key"];
+    const firecrawlKey = cookies["firecrawl-key"];
 
     // Add API key validation
-    if (process.env.NEXT_PUBLIC_ENABLE_API_KEYS === "true") {
+    if (Deno.env.get("ENABLE_API_KEYS") === "true") {
       if (!openaiKey || !firecrawlKey) {
-        return Response.json(
-          { error: "API keys are required but not provided" },
-          { status: 401 },
+        return new Response(
+          JSON.stringify({
+            error: "API keys are required but not provided",
+          }),
+          {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
     }
 
-    console.log("\n🔬 [RESEARCH ROUTE] === Request Started ===");
+    console.log("\n🔬 [RESEARCH FUNCTION] === Request Started ===");
     console.log("Query:", query);
     console.log("Model ID:", modelId);
-    console.log("Configuration:", {
-      breadth,
-      depth,
-    });
+    console.log("Configuration:", { breadth, depth });
     console.log("API Keys Present:", {
       OpenAI: openaiKey ? "✅" : "❌",
       FireCrawl: firecrawlKey ? "✅" : "❌",
@@ -44,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     try {
       const model = createModel(modelId as AIModel, openaiKey);
-      console.log("\n🤖 [RESEARCH ROUTE] === Model Created ===");
+      console.log("\n🤖 [RESEARCH FUNCTION] === Model Created ===");
       console.log("Using Model:", modelId);
 
       const encoder = new TextEncoder();
@@ -53,9 +63,12 @@ export async function POST(req: NextRequest) {
 
       (async () => {
         try {
-          console.log("\n🚀 [RESEARCH ROUTE] === Research Started ===");
+          console.log("\n🚀 [RESEARCH FUNCTION] === Research Started ===");
 
-          const feedbackQuestions = await generateFeedback({ query });
+          const feedbackQuestions = await generateFeedback({
+            query,
+            apiKey: openaiKey,
+          });
           await writer.write(
             encoder.encode(
               `data: ${
@@ -77,7 +90,7 @@ export async function POST(req: NextRequest) {
             model,
             firecrawlKey,
             onProgress: async (update: string) => {
-              console.log("\n📊 [RESEARCH ROUTE] Progress Update:", update);
+              console.log("\n📊 [RESEARCH FUNCTION] Progress Update:", update);
               await writer.write(
                 encoder.encode(
                   `data: ${
@@ -94,9 +107,10 @@ export async function POST(req: NextRequest) {
             },
           });
 
-          console.log("\n✅ [RESEARCH ROUTE] === Research Completed ===");
+          console.log("\n✅ [RESEARCH FUNCTION] === Research Completed ===");
           console.log("Learnings Count:", learnings.length);
           console.log("Visited URLs Count:", visitedUrls.length);
+          console.log("hereeee Taishi");
 
           const report = await writeFinalReport({
             prompt: query,
@@ -104,6 +118,8 @@ export async function POST(req: NextRequest) {
             visitedUrls,
             model,
           });
+
+          console.log("Here we go 2");
 
           await writer.write(
             encoder.encode(
@@ -118,8 +134,12 @@ export async function POST(req: NextRequest) {
               }\n\n`,
             ),
           );
+
+          console.log("Here we go 3");
         } catch (error) {
-          console.error("\n❌ [RESEARCH ROUTE] === Research Process Error ===");
+          console.error(
+            "\n❌ [RESEARCH FUNCTION] === Research Process Error ===",
+          );
           console.error("Error:", error);
           await writer.write(
             encoder.encode(
@@ -138,19 +158,32 @@ export async function POST(req: NextRequest) {
 
       return new Response(stream.readable, {
         headers: {
+          ...corsHeaders,
           "Content-Type": "text/event-stream",
           "Cache-Control": "no-cache",
           Connection: "keep-alive",
         },
       });
     } catch (error) {
-      console.error("\n💥 [RESEARCH ROUTE] === Route Error ===");
+      console.error("\n💥 [RESEARCH FUNCTION] === Function Error ===");
       console.error("Error:", error);
-      return Response.json({ error: "Research failed" }, { status: 500 });
+      return new Response(
+        JSON.stringify({ error: "Research failed" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
   } catch (error) {
-    console.error("\n💥 [RESEARCH ROUTE] === Parse Error ===");
+    console.error("\n💥 [RESEARCH FUNCTION] === Parse Error ===");
     console.error("Error:", error);
-    return Response.json({ error: "Research failed" }, { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Research failed" }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
-}
+});
