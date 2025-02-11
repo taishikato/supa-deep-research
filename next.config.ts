@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         source: "/api/feedback",
         destination: `${process.env.SUPABASE_FUNCTION_URL}/feedback`,
       },
+      {
+        source: "/api/research",
+        destination: `${process.env.SUPABASE_FUNCTION_URL}/research`,
+      },
     ];
   },
 };
