@@ -55,16 +55,14 @@ Deno.serve(async (req) => {
       const writer = stream.writable.getWriter();
 
       // Helper function to write and flush
-      const writeAndFlush = async (data: any) => {
+      // deno-lint-ignore no-explicit-any
+      const writeAndFlush = async (data: Record<string, any>) => {
         const encoded = encoder.encode(`data: ${JSON.stringify(data)}\n\n`);
         await writer.write(encoded);
       };
 
       (async () => {
         try {
-          // Send initial connection established message
-          // await writeAndFlush({ type: "connected" });
-
           console.log("\n🚀 [RESEARCH ROUTE] === Research Started ===");
 
           const feedbackQuestions = await generateFeedback({
