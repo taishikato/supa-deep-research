@@ -83,7 +83,7 @@ MIT License. Feel free to use and modify the code for your own projects as you w
 ## Acknowledgements
 
 - **Original CLI:** [dzhng/deep-research](https://github.com/dzhng/deep-research)
-- **Sponsor:** [Anotherwrapper](https://anotherwrapper.com)
-- **Tools:** Next.js, shadcn/ui, anotherwrapper, Vercel AI SDK
+- **Original Web UI:** [Open Deep Research](https://anotherwrapper.com/open-deep-research)
+- **Tools:** Next.js, shadcn/ui, Vercel AI SDK, Supabase
 
 Happy researching!
