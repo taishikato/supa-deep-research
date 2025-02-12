@@ -1,10 +1,23 @@
-# Supa Deep Research Web UI
+# Supa Deep Research
 
-A modern, interactive web interface built on top of the original [Deep Research CLI](https://github.com/dzhng/deep-research) project. This web app transforms the command-line research assistant into an intuitive, visually appealing experience using Next.js and shadcn/ui.
+This app is based on [open-deep-research](https://github.com/fdarkaou/open-deep-research).
+
+I wanted to run this app on affordable + OSS stack, which is Supabase.
+
+There're 3 main APIs:
+- /api/feedback: Supabase Edge Functions
+- /api/keys: Supabase Edge Functions
+- /api/research: (Still) Vercel
+
+I really want to move `/api/research` to Supabase Edge Functions, but the CPU time exceeded error prevents me from doing so.
+
+But hopefully soon!
+
+Also, I tried to [host this app on Cloudflare Workers](https://x.com/martindonadieu/status/1889630161819074988), but it was too slow. A simple API call takes about 10 secs.
 
 ## Overview
 
-Supa Deep Research Web UI is an AI-powered research assistant that transforms the original CLI tool into a modern web interface using Next.js and shadcn/ui. Try it out at [anotherwrapper.com/supa-deep-research](https://anotherwrapper.com/supa-deep-research) with your own API keys, or host it yourself.
+Supa Deep Research Web UI is an AI-powered research assistant that transforms the original CLI tool into a modern web interface using Next.js and shadcn/ui. Try it out at [supa-deep-research.com](https://www.supa-deep-research.com) with your own API keys, or host it yourself.
 
 The system combines search engines (via FireCrawl), web scraping, and language models (via OpenAI) to perform deep research on any topic. Key features include:
 
@@ -30,18 +43,6 @@ The system combines search engines (via FireCrawl), web scraping, and language m
 
 The system maintains the core research capabilities of the original CLI while providing an intuitive visual interface for controlling and monitoring the research process.
 
-## Sponsors
-
-This project is proudly sponsored by [Anotherwrapper](https://anotherwrapper.com).
-
-[![Sponsored by Anotherwrapper](https://anotherwrapper.com/og.png)](https://anotherwrapper.com)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js v14 or later
-- API keys for OpenAI and FireCrawl
 
 ### Installation
 
