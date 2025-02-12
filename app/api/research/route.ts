@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
             const feedbackQuestions = await generateFeedback({
               query,
               apiKey: openaiKey,
+              modelId,
             });
             console.log("before writeToStream");
 
