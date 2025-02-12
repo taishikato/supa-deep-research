@@ -332,7 +332,7 @@ export function Chat({
                     className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/30 
                       blur-2xl rounded-full -z-10"
                   />
-                  <BrainCircuitIcon className="w-12 h-12 mx-auto text-primary drop-shadow-[0_0_15px_rgba(var(--primary),0.3)]" />
+                  <img src="/logo.png" alt="logo" className="size-12 mx-auto" />
                 </motion.div>
 
                 <div className="space-y-2">
@@ -343,7 +343,7 @@ export function Chat({
                     className="text-base md:text-2xl font-semibold bg-clip-text text-transparent 
                       bg-gradient-to-r from-primary via-primary/90 to-primary/80"
                   >
-                    {APP_NAME}
+                    <span className="text-[#3ecf8e]">Supa</span> Deep Research
                   </motion.h2>
 
                   <motion.p
