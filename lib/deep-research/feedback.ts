@@ -1,9 +1,4 @@
-import { z } from "zod";
 import { type AIModel } from "./ai/providers";
-
-const feedbackSchema = z.object({
-  questions: z.array(z.string()),
-});
 
 export async function generateFeedback({
   query,
@@ -16,10 +11,6 @@ export async function generateFeedback({
   modelId?: AIModel;
   apiKey?: string;
 }) {
-  console.log("\n🔍 [FEEDBACK] === Function Started ===");
-  console.log("Input params:", { query, numQuestions, modelId });
-  console.log("API Key present:", apiKey ? "✅" : "❌");
-
   try {
     console.log("\n📝 [FEEDBACK] Preparing prompts...");
     const systemPrompt =
@@ -33,13 +24,7 @@ export async function generateFeedback({
     const userPrompt =
       `Generate ${numQuestions} insightful follow-up questions for this query: "${query}"`;
 
-    console.log("\n🌐 [FEEDBACK] Making OpenAI API request...");
-
-    console.log("Request init:", {
-      method: "POST",
-    });
-
-    const request = new Request("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,24 +40,15 @@ export async function generateFeedback({
       }),
     });
 
-    const response = await fetch(request);
-
-    console.log("\n📨 [FEEDBACK] Response received");
-    console.log("Response status:", response.status);
-    console.log("Response OK:", response.ok);
-
     if (!response.ok) {
       const error = await response.json();
       console.error("\n❌ [FEEDBACK] API Error:", error);
       throw new Error(`OpenAI API error: ${JSON.stringify(error)}`);
     }
 
-    console.log("\n🔄 [FEEDBACK] Parsing response...");
     const data = await response.json();
-    console.log("Raw API response:", data);
 
     const content = data.choices?.[0]?.message?.content;
-    console.log("Extracted content:", content);
 
     if (!content) {
       console.error("\n❌ [FEEDBACK] No content in response");
@@ -86,10 +62,6 @@ export async function generateFeedback({
       .filter(Boolean)
       .map((q: string) => q.trim())
       .slice(0, numQuestions);
-
-    console.log("\n✅ [FEEDBACK] Success!");
-    console.log("Generated questions:", questions);
-    console.log("Number of questions:", questions.length);
 
     return questions;
   } catch (error) {
