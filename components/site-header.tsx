@@ -8,6 +8,16 @@ export function Header() {
           <div className="text-sm text-muted-foreground font-bold flex items-center gap-2">
             <span>{APP_NAME}</span>
             <span>🧠</span>
+            <span>
+              by{" "}
+              <a
+                href="https://www.supavec.com?src=supa-deep-research"
+                target="_blank"
+                className="hover:underline"
+              >
+                Supavec
+              </a>
+            </span>
           </div>
         </div>
       </header>
