@@ -1,6 +1,6 @@
 # Supa Deep Research
 
-This app is based on [open-deep-research](https://github.com/fdarkaou/open-deep-research).
+This app was created by the [Supavec team](https://www.supavec.com), based on [open-deep-research](https://github.com/fdarkaou/open-deep-research).
 
 I wanted to run this app on affordable + OSS stack, which is Supabase.
 
