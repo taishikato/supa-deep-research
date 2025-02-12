@@ -11,7 +11,9 @@ There're 3 main APIs:
 
 I really want to move `/api/research` to Supabase Edge Functions, but the CPU time exceeded error prevents me from doing so.
 
-But hopefully soon!
+Hopefully soon!
+
+(`/supabase/functions/api/research` does work on your local tho with `$ supabase functions serve research --no-verify-jwt`)
 
 Also, I tried to [host this app on Cloudflare Workers](https://x.com/martindonadieu/status/1889630161819074988), but it was too slow. A simple API call takes about 10 secs (sry I'm a CF noob).
 
