@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react";
 import { type Message } from "ai";
 import { motion } from "framer-motion";
-import { BrainCircuitIcon, GithubIcon, PanelRightOpen } from "lucide-react";
+import { GithubIcon, PanelRightOpen } from "lucide-react";
 
 import { useScrollToBottom } from "@/lib/hooks/use-scroll-to-bottom";
-import { APP_NAME } from "@/lib/constants";
 
 import DownloadTxtButton from "./download-txt";
 import { MultimodalInput } from "./input";
