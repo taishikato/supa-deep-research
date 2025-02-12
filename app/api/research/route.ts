@@ -8,8 +8,16 @@ import {
   writeFinalReport,
 } from "@/lib/deep-research";
 import { type AIModel, createModel } from "@/lib/deep-research/ai/providers";
+import PostHogClient from "@/app/posthog";
 
 export async function POST(req: NextRequest) {
+  const posthog = PostHogClient();
+
+  posthog.capture({
+    distinctId: req.headers.get("x-forwarded-for") ?? "unknown",
+    event: "Research started",
+  });
+
   try {
     const {
       query,

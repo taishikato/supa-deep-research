@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
+import { CSPostHogProvider } from "./providers";
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -29,7 +30,7 @@ export default function RootLayout({
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          {children}
+          <CSPostHogProvider>{children}</CSPostHogProvider>
         </ThemeProvider>
       </body>
     </html>
