@@ -13,7 +13,7 @@ I really want to move `/api/research` to Supabase Edge Functions, but the CPU ti
 
 But hopefully soon!
 
-Also, I tried to [host this app on Cloudflare Workers](https://x.com/martindonadieu/status/1889630161819074988), but it was too slow. A simple API call takes about 10 secs.
+Also, I tried to [host this app on Cloudflare Workers](https://x.com/martindonadieu/status/1889630161819074988), but it was too slow. A simple API call takes about 10 secs (sry I'm a CF noob).
 
 ## Overview
 
