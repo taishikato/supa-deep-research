@@ -353,8 +353,8 @@ export function Chat({
                     className="text-xs md:text-base text-muted-foreground/80 max-w-[340px] mx-auto leading-relaxed"
                   >
                     An open source alternative to OpenAI and Gemini's deep
-                    research capabilities. Ask any question to generate a
-                    comprehensive report.
+                    research capabilities with Supabase Edge Functions. Ask any
+                    question to generate a comprehensive report.
                   </motion.p>
 
                   <motion.div
