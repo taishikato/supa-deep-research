@@ -58,8 +58,6 @@ export function MultimodalInput({
   // Read the feature flag from environment variables.
   const enableApiKeys = process.env.NEXT_PUBLIC_ENABLE_API_KEYS === "true";
 
-  console.log({ enableApiKeys });
-
   // When API keys are disabled via env flag, always consider keys as present.
   const effectiveHasKeys = enableApiKeys ? hasKeys : true;
 
