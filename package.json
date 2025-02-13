@@ -10,6 +10,7 @@
     "@ai-sdk/openai": "^1.1.9",
     "@edge-runtime/primitives": "^6.0.0",
     "@mendable/firecrawl-js": "^1.16.0",
+    "@next/third-parties": "^15.1.7",
     "@opennextjs/aws": "^3.4.2",
     "@opennextjs/cloudflare": "^0.4.8",
     "@radix-ui/react-dialog": "^1.1.6",

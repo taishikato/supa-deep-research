@@ -6,6 +6,7 @@ import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { CSPostHogProvider } from "./providers";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -33,6 +34,7 @@ export default function RootLayout({
           <CSPostHogProvider>{children}</CSPostHogProvider>
         </ThemeProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
     </html>
   );
 }
